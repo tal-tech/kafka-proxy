@@ -113,7 +113,6 @@ public class KafkaDelayQService {
     private void handleDelayMessage(ConsumerRecords<String, String> consumerRecords, DelayQueue<DelayItem> delayQ
             , Map<TopicPartition, OffsetAndMetadata> offsetsMap, HashMap<String, AtomicInteger> messageNum) {
         for (ConsumerRecord<String, String> record : consumerRecords) {
-            log.info("---> record is " + record);
             String topic = record.topic();
             int partition = record.partition();
             long offset = record.offset();

@@ -1,6 +1,5 @@
 server:
   servlet:
-    #服务的路径,不要修改
     context-path: /
   #监听的端口,如果部署在同一台机器上,需要更换端口
   port: 9080
@@ -8,22 +7,17 @@ kafka:
   #kafka集群的ip+port,用逗号分隔
   bootstrap-servers: 127.0.0.1:9092
   consumer:
-    #zookeeper集群的ip+port,逗号分隔
-    zookeeper-connect: 127.0.0.1:2181
     #Kafka中没有初始偏移或如果当前偏移在服务器上不再存在时,默认区最新 ，有三个选项 【latest, earliest, none】
-    auto-offset-reset: earliest
+    auto-offset-reset: latest
     #是否开启自动提交
     enable-auto-commit: false
     #key的解码方式
     key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     #value的解码方式
     value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-
+    #session的超时时间
     session-timeout: 6000
-    concurrency: 10
   producer:
-    #kafka集群的ip+port,用逗号分隔
-    servers: 127.0.0.1:9092
     #每批次发送消息的数量
     batch-size: 16384
     #设置大于0的值将使客户端重新发送任何数据，一旦这些数据发送失败。
@@ -32,6 +26,7 @@ kafka:
     linger: 1
     #producer缓存数据的内存大小。
     buffer-memory: 33554432
+    #阻塞时间
     max-block-ms: 5000
 
 #kafka消费者线程池配置参数
@@ -67,9 +62,8 @@ spring:
   application:
     name: kafka_delay_anytime_service
 
-#自定义
+#自定义内存中消息的数量
 costomize:
-  #redis消息map最大容量
   msgMap:
     max-size: 20000
     min-size: 18000

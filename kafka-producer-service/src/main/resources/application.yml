@@ -39,6 +39,7 @@ kafka:
     linger: 1
     #producer缓存数据的内存大小
     buffer-memory: 33554432
+    #阻塞时间
     max-block-ms: 5000
 
 

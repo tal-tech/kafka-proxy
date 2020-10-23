@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,7 @@ import java.util.Map;
 @AllArgsConstructor
 @ConfigurationProperties(prefix = "kafka.producer")
 public class ASyncKafkaProducerConfig {
+    @Value("${kafka.bootstrap-servers}")
     private String servers;
     private int retries;
     private int batchSize;
