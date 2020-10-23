@@ -1,0 +1,95 @@
+server:
+  servlet:
+    #服务的路径,不要修改
+    context-path: /
+  #监听的端口,如果部署在同一台机器上,需要更换端口
+  port: 9080
+kafka:
+  #kafka集群的ip+port,用逗号分隔
+  bootstrap-servers: 127.0.0.1:9092
+  consumer:
+    #zookeeper集群的ip+port,逗号分隔
+    zookeeper-connect: 127.0.0.1:2181
+    #Kafka中没有初始偏移或如果当前偏移在服务器上不再存在时,默认区最新 ，有三个选项 【latest, earliest, none】
+    auto-offset-reset: earliest
+    #是否开启自动提交
+    enable-auto-commit: false
+    #key的解码方式
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    #value的解码方式
+    value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+    session-timeout: 6000
+    concurrency: 10
+  producer:
+    #kafka集群的ip+port,用逗号分隔
+    servers: 127.0.0.1:9092
+    #每批次发送消息的数量
+    batch-size: 16384
+    #设置大于0的值将使客户端重新发送任何数据，一旦这些数据发送失败。
+    retries: 3
+    #lingger  ms是sender线程在检查batch是否ready时候，判断有没有过期的参数，默认大小是0ms。:
+    linger: 1
+    #producer缓存数据的内存大小。
+    buffer-memory: 33554432
+    max-block-ms: 5000
+
+#kafka消费者线程池配置参数
+task:
+  no-bound:
+    pool:
+      #设置核心线程数
+      corePoolSize: 1
+      #设置最大线程数
+      maxPoolSize: 10000
+      #设置线程活跃时间（秒）
+      keepAliveSeconds: 300
+      #设置队列容量
+      queueCapacity: 0
+  max-fixed:
+    pool:
+      #设置核心线程数
+      corePoolSize: 6
+      #设置最大线程数
+      maxPoolSize: 128
+      #设置线程活跃时间（秒）
+      keepAliveSeconds: 300
+      #设置队列容量
+      queueCapacity: 1000000
+
+proxy:
+  config:
+    delay:
+      partition-num: 1
+      replication: 1
+
+spring:
+  application:
+    name: kafka_delay_anytime_service
+
+#自定义
+costomize:
+  #redis消息map最大容量
+  msgMap:
+    max-size: 20000
+    min-size: 18000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  health:
+    redis:
+      enabled: false
+  endpoint:
+    shutdown:
+      enabled: true
+localdb:
+  config:
+    path: ${user.home}
+    file: 'delayQ.db'
+    name: 'message'

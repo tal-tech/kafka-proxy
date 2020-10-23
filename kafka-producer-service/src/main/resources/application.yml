@@ -1,0 +1,93 @@
+server:
+  servlet:
+    context-path: /
+  port: 8080
+  undertow:
+    # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
+    # 不要设置过大，如果过大，启动项目会报错：打开文件数过多
+    io-threads: 6
+    # 阻塞任务线程池, 当执行类似servlet请求阻塞IO操作, undertow会从这个线程池中取得线程
+    # 它的值设置取决于系统线程执行任务的阻塞系数，默认值是IO线程数*8
+    worker-threads: 48
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    # 每块buffer的空间大小,越小的空间被利用越充分，不要设置太大，以免影响其他应用，合适即可
+    buffer-size: 2048
+    # 是否分配的直接内存(NIO直接分配的堆外内存)
+    direct-buffers: on
+
+#线程池配置参数
+task:
+  pool:
+    #设置核心线程数
+    corePoolSize: 6
+    #设置最大线程数
+    maxPoolSize: 128
+    #设置线程活跃时间（秒）
+    keepAliveSeconds: 300
+    #设置队列容量,可以根据内存的实际容量设计
+    queueCapacity: 1000000
+
+kafka:
+  producer:
+    #kafka集群的ip+port,用逗号分隔
+    servers: 127.0.0.1:9092
+    #每批次发送消息的数量
+    batch-size: 16384
+    #设置大于0的值将使客户端重新发送任何数据，一旦这些数据发送失败。
+    retries: 1
+    #lingger  ms是sender线程在检查batch是否ready时候，判断有没有过期的参数，默认大小是0ms。:
+    linger: 1
+    #producer缓存数据的内存大小
+    buffer-memory: 33554432
+    max-block-ms: 5000
+
+
+spring:
+  application:
+    name: kafka_producer_service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+proxy:
+  config:
+    delay:
+    #server是否自动创建topic
+    auto-create-topic: true
+
+localdb:
+  config:
+    path: ${user.home}
+    file: 'producer.db'
+    name: 'message'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
