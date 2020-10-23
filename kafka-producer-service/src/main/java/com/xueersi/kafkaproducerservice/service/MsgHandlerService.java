@@ -63,7 +63,9 @@ public class MsgHandlerService {
     }
 
     public static ProducerRecord<String, String> msg2ProducerRecord(Message message) {
-
+        if (message.getHeaders() == null) {
+            message.setHeaders(new HashMap<>());
+        }
         if (message.getMid() == null || message.getMid().equals("")) {
             message.setMid(UUID.randomUUID().toString());
         }
@@ -126,10 +128,7 @@ public class MsgHandlerService {
     }
 
     public void checkDelayMessage(Message message) {
-        if (message.getHeaders() == null) {
-            message.setHeaders(new HashMap<>());
-        }
-        if (!message.getHeaders().containsKey(X_DELAY)) {
+        if (message.getHeaders() == null || !message.getHeaders().containsKey(X_DELAY)) {
             return;
         }
         //延时时间,单位秒
