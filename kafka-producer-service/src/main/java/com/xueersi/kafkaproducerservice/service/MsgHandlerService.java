@@ -129,15 +129,12 @@ public class MsgHandlerService {
         if (message.getHeaders() == null) {
             message.setHeaders(new HashMap<>());
         }
-        if (message.getExtra() == null) {
-            message.setExtra(new HashMap<>());
-        }
-        if (!message.getExtra().containsKey(X_DELAY)) {
+        if (!message.getHeaders().containsKey(X_DELAY)) {
             return;
         }
         //延时时间,单位秒
         int delayTime;
-        delayTime = Integer.parseInt(String.valueOf(message.getExtra().get(X_DELAY)));
+        delayTime = Integer.parseInt(String.valueOf(message.getHeaders().get(X_DELAY)));
 
         //计算延时级别
         Integer delayLevel = getDelayLevel(delayTime);

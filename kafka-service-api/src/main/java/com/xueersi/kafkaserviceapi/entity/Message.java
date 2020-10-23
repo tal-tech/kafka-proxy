@@ -22,13 +22,9 @@ public class Message implements Serializable {
     private String key;
     /**
      * 消息的头信息
-     */
-    private Map<String, Object> headers;
-    /**
-     * 消息的一些额外参数
      * ps:延时消息需要用到这个字段,如: "x-delay":5,即为延时等级为5秒的消息请求
      */
-    private Map<String, Object> extra;
+    private Map<String, Object> headers;
     /**
      * 消息的来源IP
      */
