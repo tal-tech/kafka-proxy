@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.xueersi</groupId>
     <artifactId>kafka-delay-anytime-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>kafka-delay-anytime-service</name>
     <description>Demo project for Spring Boot</description>
 

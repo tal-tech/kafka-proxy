@@ -5,15 +5,13 @@ APP_PATH=/home/www/
 APP_NAME=kafka-producer-service-1.0.0.jar
 #判断参数是否存在
 if [ x"$2" = x ]; then
-  echo "Example:sh producer_service.sh [start|stop|restart|status] [tw_pika_biz|tw_pika_log|tw_pika_public|tw_pika_sci]"
   exit 1
 fi
-ACTIVE=$2
 
 case $1 in
 start)
   mkdir -p ${HOME}/logs/producer
-  java -jar ${APP_PATH}${APP_NAME} -xmx=6g -xms=6g -xmn=2g --XX:MetaspaceSize=1g --XX:MaxMetaspaceSize=1g --spring.profiles.active=${ACTIVE} &
+  java -jar ${APP_PATH}${APP_NAME} -xmx=6g -xms=6g -xmn=2g --XX:MetaspaceSize=1g --XX:MaxMetaspaceSize=1g >/dev/null 2>&1 &
   echo ${APP_NAME}:$2 start!
   ;;
 stop)
@@ -27,12 +25,6 @@ stop)
     kill -15 $P_ID
   fi
   echo ${APP_NAME} stop!
-  ;;
-restart)
-  bash "$0" stop ${ACTIVE}
-  echo project is restarting
-  sleep 10
-  bash "$0" start ${ACTIVE}
   ;;
 status)
   ps -aux | grep ${APP_NAME} | grep -v 'grep'
